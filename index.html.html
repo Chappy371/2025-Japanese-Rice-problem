@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本のコメ価格高騰：需給バランスの真相</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-line {
+            width: 2px;
+            background-color: #89CFF3;
+            flex-grow: 1;
+        }
+        .flow-line-h {
+            height: 2px;
+            background-color: #89CFF3;
+        }
+        .flow-node {
+            border: 2px solid #0079FF;
+        }
+        /* For print/PDF page breaks */
+        .page-break-after {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12 page-break-after">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#004AAD] mb-2">日本のコメ価格高騰</h1>
+            <p class="text-xl text-gray-600">「令和のコメ騒動」の真相：需給バランスからのインサイト</p>
+        </header>
+
+        <section id="summary" class="mb-12 page-break-after">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#0079FF]">
+                    <p class="text-5xl font-bold text-[#004AAD] mb-2">~70%</p>
+                    <h3 class="font-bold text-lg">価格急騰</h3>
+                    <p class="text-sm text-gray-600">2023年秋以降、5kgあたりの店頭価格が最大70%上昇。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#0079FF]">
+                    <p class="text-5xl font-bold text-[#004AAD] mb-2">153万t</p>
+                    <h3 class="font-bold text-lg">歴史的低在庫</h3>
+                    <p class="text-sm text-gray-600">2023年の期末民間在庫は過去最低水準に。タイトな需給を示唆。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#0079FF]">
+                    <p class="text-2xl md:text-3xl font-bold text-[#004AAD] mb-2 leading-tight">構造的ギャップ</p>
+                    <h3 class="font-bold text-lg">問題の本質</h3>
+                    <p class="text-sm text-gray-600">生産不足ではなく、流通の硬直性と一時的な需要増が原因。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="supply-demand" class="mb-12 page-break-after">
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-center mb-1 text-[#004AAD]">生産・需要・在庫の推移 (2021-2025年)</h2>
+                <p class="text-center text-gray-600 mb-6">2023年の需要急増と在庫減少が市場の逼迫感を生み出しましたが、2024年産米は生産が需要を上回る見込みです。しかし、在庫水準が低いため、依然として予断を許さない状況が続いています。</p>
+                <div class="chart-container">
+                    <canvas id="supplyDemandChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="factors" class="mb-12 page-break-after">
+             <h2 class="text-2xl font-bold text-center mb-6 text-[#004AAD]">価格高騰の複合的要因</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">☀️</span>
+                        <h3 class="font-bold text-lg">異常気象</h3>
+                    </div>
+                    <p class="text-gray-600">2023年夏の酷暑による品質低下懸念が、卸の調達意欲を刺激し、需給をタイトにしました。</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">🛒</span>
+                        <h3 class="font-bold text-lg">購買行動の変化</h3>
+                    </div>
+                    <p class="text-gray-600">価格不安や災害への備えから家庭での「買いだめ」が発生。外食・インバウンド需要の回復も重なりました。</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">🚚</span>
+                        <h3 class="font-bold text-lg">流通構造の問題</h3>
+                    </div>
+                    <p class="text-gray-600">JAの集荷量が減少し、農家との直接取引が増加。在庫が分散し、従来の流通網への供給が細りました。</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">🏛️</span>
+                        <h3 class="font-bold text-lg">制度の硬直性</h3>
+                    </div>
+                    <p class="text-gray-600">市況を価格に反映するスピードが遅く、備蓄米放出の判断・実行にも時間がかかり、需給調整が遅延しました。</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">💰</span>
+                        <h3 class="font-bold text-lg">生産コストの上昇</h3>
+                    </div>
+                    <p class="text-gray-600">肥料や燃料価格の高騰が生産コストを押し上げ、農家の「売り渋り」につながる一因となりました。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">👥</span>
+                        <h3 class="font-bold text-lg">パニック心理</h3>
+                    </div>
+                    <p class="text-gray-600">品薄報道が消費者の不安を煽り、さらなる買いだめを誘発。需要を実態以上に押し上げました。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="flow" class="mb-12 page-break-after">
+             <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-center mb-1 text-[#004AAD]">「令和のコメ騒動」発生のメカニズム</h2>
+                <p class="text-center text-gray-600 mb-8">複数の要因が連鎖し、消費者のパニック心理を増幅させることで、市場の混乱が引き起こされました。これは「本質的な生産不足」ではなく、システムの遅延と情報の非対称性が生んだ構造的な問題です。</p>
+                <div class="flex flex-col items-center">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4 w-full max-w-4xl">
+                        <div class="flow-node p-3 rounded-lg text-center bg-blue-50">気象リスク</div>
+                        <div class="flow-node p-3 rounded-lg text-center bg-blue-50">需要回復</div>
+                        <div class="flow-node p-3 rounded-lg text-center bg-blue-50">コスト高</div>
+                    </div>
+                    <div class="w-full flex justify-center items-center h-16">
+                        <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-node p-4 rounded-xl text-center bg-blue-100 font-bold w-full max-w-md">
+                        流通システムの硬直性 & 情報伝達の遅延
+                    </div>
+                    <div class="w-full flex justify-center items-center h-16">
+                         <div class="flow-line"></div>
+                    </div>
+                    <div class="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full max-w-4xl">
+                        <div class="flow-node p-4 rounded-lg text-center bg-orange-50 flex-1">パニック的な買いだめ</div>
+                        <div class="flex md:flex-col items-center justify-center mx-4">
+                            <span class="text-2xl font-bold text-gray-400">+</span>
+                        </div>
+                        <div class="flow-node p-4 rounded-lg text-center bg-orange-50 flex-1">流通在庫の偏在・減少</div>
+                    </div>
+                    <div class="w-full flex justify-center items-center h-16">
+                         <div class="flow-line"></div>
+                    </div>
+                    <div class="flow-node p-6 rounded-full text-center bg-red-100 font-bold text-xl text-red-700 w-64 h-32 flex items-center justify-center">
+                        店頭での品薄 &<br>価格高騰
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stockpile" class="mb-12 page-break-after">
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                 <h2 class="text-2xl font-bold text-center mb-1 text-[#004AAD]">備蓄米・古米の役割とは？</h2>
+                 <p class="text-center text-gray-600 mb-6">政府は価格安定のため備蓄米の放出を決定しました。これには2021年産の「古古古米」も含まれますが、これは「食べる米がない」状況ではなく、あくまで安価な選択肢を提供し、市場心理を落ち着かせるための補完的な措置です。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="stockpileChart"></canvas>
+                    </div>
+                    <div class="text-gray-700 space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-green-500 text-2xl mr-3">✔</span>
+                            <div>
+                                <h4 class="font-bold">価格安定策</h4>
+                                <p>市場の過熱を抑え、消費者に安価な選択肢を提供することが主目的です。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                             <span class="text-green-500 text-2xl mr-3">✔</span>
+                            <div>
+                                <h4 class="font-bold">品質管理</h4>
+                                <p>食用基準を満たしており、大手チェーンなどで厳格な品質管理のもと流通します。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                           <span class="text-red-500 text-2xl mr-3">✖</span>
+                            <div>
+                                <h4 class="font-bold">供給不足の証明ではない</h4>
+                                <p>「古米しか食べられない」という状況ではなく、あくまで需給ギャップを埋めるための一時的な策です。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 pt-8 border-t">
+            <h2 class="text-2xl font-bold text-center mb-6 text-[#004AAD]">冷静な行動が最大の解決策</h2>
+            <p class="max-w-3xl mx-auto text-gray-600">今回の事態は、日本の食料供給システムの脆弱性を浮き彫りにしました。陰謀論やデマに惑わされず、信頼できるデータに基づき、私たち一人ひとりが冷静に購買行動をとることが、市場の安定を取り戻すための最も確実な方法です。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const chartColors = {
+            blue1: '#004AAD',
+            blue2: '#0079FF',
+            blue3: '#89CFF3',
+            gray: '#E5E7EB'
+        };
+
+        const supplyDemandData = {
+            labels: ['2021年', '2022年', '2023年', '2024年(予)', '2025年(予)'],
+            datasets: [
+                {
+                    label: '生産量 (万t)',
+                    data: [703, 668, 661, 681, 683],
+                    borderColor: chartColors.blue2,
+                    backgroundColor: chartColors.blue2,
+                    tension: 0.1,
+                    type: 'line',
+                    yAxisID: 'y'
+                },
+                {
+                    label: '需要量 (万t)',
+                    data: [690, 672, 705, 674, 670],
+                    borderColor: chartColors.blue1,
+                    backgroundColor: chartColors.blue1,
+                    tension: 0.1,
+                    type: 'line',
+                    yAxisID: 'y'
+                },
+                {
+                    label: '期末民間在庫 (万t)',
+                    data: [185, 180, 153, 160, 165],
+                    backgroundColor: chartColors.blue3,
+                    type: 'bar',
+                    yAxisID: 'y1'
+                }
+            ]
+        };
+
+        new Chart(document.getElementById('supplyDemandChart'), {
+            type: 'bar',
+            data: supplyDemandData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        grid: { display: false }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: '生産・需要量 (万t)' },
+                        min: 600
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: '在庫量 (万t)' },
+                        grid: { drawOnChartArea: false, },
+                         min: 100
+                    }
+                },
+                plugins: {
+                    tooltip: { callbacks: { title: tooltipTitleCallback } },
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        const stockpileData = {
+            labels: ['2021年産 (古古古米)', '2022年産 (古古米)'],
+            datasets: [{
+                label: '備蓄米放出内訳 (万t)',
+                data: [10, 20],
+                backgroundColor: [chartColors.blue3, chartColors.blue2],
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+            }]
+        };
+
+        new Chart(document.getElementById('stockpileChart'), {
+            type: 'doughnut',
+            data: stockpileData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { callbacks: { title: tooltipTitleCallback } },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '放出備蓄米の内訳 (計30万t)',
+                        padding: {
+                            top: 10,
+                            bottom: 20
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+</body>
+</html>
